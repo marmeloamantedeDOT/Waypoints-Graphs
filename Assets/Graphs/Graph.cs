@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.Universal.Internal;
 
 public class Graph
 {
     List<Edge> edges = new List<Edge>();
     List<Node> nodes = new List<Node>();
-    List<Node> pathList = new List<Node>();
+    public List<Node> pathList = new List<Node>();
 
     public Graph() { }
 
@@ -24,7 +25,7 @@ public class Graph
         Node from = FindNode(fromNode);
         Node to = FindNode (toNode);
 
-        if (from != null && to != null) ;
+        if (from != null && to != null)
                 {
                 Edge e = new Edge(from, to);
             edges.Add(e);
@@ -45,13 +46,22 @@ public class Graph
 
     public bool AStar(GameObject startId, GameObject endId)
     {
+        if (startId == endId)
+        {
+            pathList.Clear();
+            return false;
+        }
+
         Node start = FindNode(startId);
         Node end = FindNode(endId);
+        /*Debug.Log("Start: " + startId.getID().name);
+        Debug.Log("End: " + startId.getID().name);*/
 
         if (start == null || end == null)
         {
             return false;
         }
+
         List<Node> open = new List<Node>();
         List <Node> close = new List<Node>();
         float tentative_g_score = 0;
